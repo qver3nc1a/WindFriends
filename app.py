@@ -5,6 +5,7 @@ import config
 from werkzeug.security import check_password_hash, generate_password_hash
 import db
 import sqlite3
+import meetings
 
 app = Flask(__name__)
 app.secret_key = config.secret_key
@@ -78,6 +79,6 @@ def create_meeting():
     description = request.form["description"]
     user_id = session["user_id"]
 
-    sql = "INSERT INTO meetings (title, gear, date, description, user_id) VALUES (?, ?, ?, ?, ?)"
-    db.execute(sql, [title, gear, date, description, user_id])
+    meetings.add_meeting(title, gear, date, description, user_id)
+
     return redirect("/")
