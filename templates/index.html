@@ -14,6 +14,14 @@
     <p>
         <a href="/logout">Kirjaudu ulos</a>
     </p>
+    <h2>Meetings</h2>
+    <ul>
+        {%for meeting in meetings%}
+        <li>
+            <a href="/meeting/{{meeting.id}}">{{meeting.title}}</a>
+        </li>
+        {%endfor%}
+    </ul>
     <p>
         <a href="/new_meeting">Suggest a meeting</a>
     </p>
@@ -37,14 +45,6 @@
     </p>
     {% endif %}
 
-    <h2>Meetings</h2>
-    <ul>
-        {%for meeting in meetings%}
-        <li>
-            <a href="/meeting/{{meeting.id}}">{{meeting.title}}</a>
-        </li>
-        {%endfor%}
-    </ul>
     </body>
 
     </html>
