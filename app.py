@@ -89,3 +89,22 @@ def create_meeting():
 def show_meeting(meeting_id):
     meeting = meetings.get_meeting(meeting_id)
     return render_template("show_meeting.html", meeting=meeting)
+
+
+@app.route("/edit_meeting/<int:meeting_id>")
+def edit_meeting(meeting_id):
+    meeting = meetings.get_meeting(meeting_id)
+    return render_template("edit_meeting.html", meeting=meeting)
+
+
+@app.route("/update_meeting", methods=["POST"])
+def update_meeting():
+    meeting_id = request.form["meeting_id"]
+    title = request.form["title"]
+    gear = request.form["gear"]
+    date = request.form["date"]
+    description = request.form["description"]
+
+    meetings.update_meeting(meeting_id, title, gear, date, description)
+
+    return redirect("/meeting/" + str(meeting_id))

@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Edit meeting</title>
+</head>
+
+<body>
+    <h1>Edit meeting</h1>
+    <form action="/update_meeting" method="POST">
+    <p>
+        Title: <br />
+        <p>Give your suggestion a name.</p>
+        <input type="text" name="title" value='{{meeting.title}}' required/>
+    </p>
+    <p>
+        Gear: <br />
+        <p>What gear do you use?</p>
+        <input type="text" name="gear" value='{{meeting.gear}}' required/>
+    </p>
+    <p>
+        Date: <br />
+        <p>When do you want to meet?</p>
+        <input type="datetime-local" name="date" value='{{meeting.date}}' required>
+    </p>
+    <p>
+        Description: <br />
+        <p>Who are you? What do you want to do?</p>
+        <textarea name='description' rows="5" cols="40">{{meeting.description}}</textarea>
+    </p>
+    <input type="hidden" name="meeting_id" value="{{ meeting.id }}">
+    <input type="submit" value="Update meeting" />
+  </form>
+</body>
+
+</html>

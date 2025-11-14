@@ -3,6 +3,11 @@
 
 <head>
   <title>{{ meeting.title }}</title>
+  {% if session.user_id == meeting.user_id %}
+  <p>
+    <a href="/edit_meeting/{{ meeting.id }}">edit</a>
+  </p>
+  {%endif%}
 </head>
 
 <body>
