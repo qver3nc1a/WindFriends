@@ -15,7 +15,7 @@
         {% endif %}
         {% if session.username %}
     <p>
-        Signed in as {{ session.username }}, your id is {{ session.user_id }}
+        Signed in as <a href="/user/{{ session.user_id }}">{{ session.username }}</a>
     </p>
     <p>
         <a href="/logout">Logout</a>

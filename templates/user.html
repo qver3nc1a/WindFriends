@@ -1,0 +1,28 @@
+<h1>User {{ user.username }}</h1>
+
+<p>
+  {{ user.username }} has suggested {{ meetings|length }} meetings
+</p>
+
+{% if meetings %}
+  <p>
+    First meeting suggested: {{ meetings[-1].title }}
+  </p>
+  <p>
+    Last meeting suggested: {{ meetings[0].title }}
+  </p>
+{% endif %}
+
+<h2>{{ user.username }}'s suggestions</h2>
+<ul>
+{% for meeting in meetings %}
+  <li>
+    <a href="/meeting/{{ meeting.id }}">
+      {{ meeting.title }}
+    </a>
+    <br />
+    ({{ meeting.description }})
+  </li>
+{% endfor %}
+</ul>
+<a href="/">back</a>

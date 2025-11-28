@@ -6,6 +6,7 @@ from werkzeug.security import check_password_hash, generate_password_hash
 import db
 import sqlite3
 import meetings
+import users
 
 app = Flask(__name__)
 app.secret_key = config.secret_key
@@ -31,13 +32,13 @@ def create():
     password1 = request.form["password1"]
     password2 = request.form["password2"]
     if password1 != password2:
-        error = "VIRHE: salasanat eivät ole samat"
+        error = "Passwords don't match"
         return render_template("register.html", error=error)
     password_hash = generate_password_hash(password1)
 
     success = db.add_user(username, password_hash)
     if not success:
-        error = "VIRHE: tunnus on jo varattu"
+        error = "This username is already in use"
         return render_template("register.html", error=error)
     session["register_success"] = True
     return redirect("/")
@@ -50,7 +51,7 @@ def login():
 
     user = db.get_user_by_username(username)
     if not user:
-        error = "VIRHE: käyttäjää ei ole olemassa"
+        error = "This user doesn't exist"
         return render_template("index.html", error=error)
     user_id = user["id"]
     password_hash = user["password_hash"]
@@ -59,7 +60,7 @@ def login():
         session["user_id"] = user_id
         return redirect("/")
     else:
-        error = "VIRHE: väärä tunnus tai salasana"
+        error = "Wrong username or password"
         return render_template("index.html", error=error)
 
 
@@ -88,7 +89,7 @@ def create_meeting():
         or not date.strip()
         or not description.strip()
     ):
-        error = "Täytä kaikki kentät."
+        error = "Please fill all fields"
         return render_template("new_meeting.html", error=error)
 
     meetings.add_meeting(title, gear, date, description, user_id)
@@ -126,3 +127,13 @@ def search():
     query = request.args.get("query")
     results = meetings.search(query) if query else []
     return render_template("search.html", query=query, results=results)
+
+
+@app.route("/user/<int:user_id>")
+def show_user(user_id):
+    user = users.get_user(user_id)
+    if not user:
+        error = "User not found"
+        return render_template("index.html", error=error)
+    meetings = users.get_meetings(user_id)
+    return render_template("user.html", user=user, meetings=meetings)

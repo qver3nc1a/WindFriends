@@ -21,7 +21,7 @@
         {{ result.title }}
       </a>
       <br />
-      {{ result.date }} ({{ result.username }})
+      {{ result.date }} (<a href="/user/{{ result.user_id }}">{{ result.username }}</a>)
     </li>
   {% endfor %}
   </ul>

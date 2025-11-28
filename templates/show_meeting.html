@@ -17,7 +17,7 @@
         Additional information: {{ meeting.description | replace('\n', '<br>') | safe }}
     </p>
     <p>
-        Organizer: {{ meeting.username }}
+        Organizer: <a href="/user/{{ meeting.user_id }}">{{ meeting.username }}</a>
     </p>
     {% if session.user_id == meeting.user_id %}
     <p>
