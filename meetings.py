@@ -31,3 +31,14 @@ def update_meeting(meeting_id, title, gear, date, description):
                                 description = ?
             WHERE id = ?"""
     db.execute(sql, [title, gear, date, description, meeting_id])
+
+
+def search(query):
+    sql = """
+            SELECT m.id, m.title, m.gear, m.date, m.description, u.username
+            FROM meetings m
+            JOIN users u ON m.user_id = u.id
+            WHERE m.title LIKE ? OR m.gear LIKE ? OR m.description LIKE ?
+            ORDER BY m.date DESC
+        """
+    return db.query(sql, ["%" + query + "%", "%" + query + "%", "%" + query + "%"])

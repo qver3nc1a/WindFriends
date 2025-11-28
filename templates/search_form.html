@@ -1,0 +1,28 @@
+<h2>Search meetings</h2>
+<form action="/search" method="get">
+    <p>
+        Key word:
+        {% if query %}
+        <input type="text" name="query" value="{{ query }}" />
+        {% else %}
+        <input type="text" name="query" />
+        {% endif %}
+    </p>
+    <input type="submit" value="Search" />
+</form>
+
+{% if query %}
+  <hr />
+  <h2>Search results</h2>
+  <ul>
+  {% for result in results %}
+    <li>
+      <a href="/meeting/{{ result.id }}">
+        {{ result.title }}
+      </a>
+      <br />
+      {{ result.date }} ({{ result.username }})
+    </li>
+  {% endfor %}
+  </ul>
+{% endif %}

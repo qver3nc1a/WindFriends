@@ -119,3 +119,10 @@ def update_meeting():
     meetings.update_meeting(meeting_id, title, gear, date, description)
 
     return redirect("/meeting/" + str(meeting_id))
+
+
+@app.route("/search")
+def search():
+    query = request.args.get("query")
+    results = meetings.search(query) if query else []
+    return render_template("search.html", query=query, results=results)
