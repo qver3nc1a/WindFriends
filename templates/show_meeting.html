@@ -3,11 +3,6 @@
 
 <head>
   <title>{{ meeting.title }}</title>
-  {% if session.user_id == meeting.user_id %}
-  <p>
-    <a href="/edit_meeting/{{ meeting.id }}">edit</a>
-  </p>
-  {%endif%}
 </head>
 
 <body>
@@ -19,11 +14,16 @@
         Date of the meeting: {{ meeting.date }}
     </p>
     <p>
-        Additional information: {{ meeting.description }}
+        Additional information: {{ meeting.description | replace('\n', '<br>') | safe }}
     </p>
     <p>
         Organizer: {{ meeting.username }}
     </p>
+    {% if session.user_id == meeting.user_id %}
+    <p>
+        <a href="/edit_meeting/{{ meeting.id }}">edit</a>
+    </p>
+    {%endif%}
     <p>
         <a href="/">back</a>
     </p>

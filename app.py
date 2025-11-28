@@ -14,7 +14,10 @@ app.secret_key = config.secret_key
 @app.route("/")
 def index():
     all_meetings = meetings.get_meetings()
-    return render_template("index.html", meetings=all_meetings)
+    register_success = session.pop("register_success", None)
+    return render_template(
+        "index.html", meetings=all_meetings, register_success=register_success
+    )
 
 
 @app.route("/register")
@@ -28,16 +31,16 @@ def create():
     password1 = request.form["password1"]
     password2 = request.form["password2"]
     if password1 != password2:
-        return "VIRHE: salasanat eivät ole samat <br /><a href='/register'>back</a>"
+        error = "VIRHE: salasanat eivät ole samat"
+        return render_template("register.html", error=error)
     password_hash = generate_password_hash(password1)
 
-    try:
-        sql = "INSERT INTO users (username, password_hash) VALUES (?, ?)"
-        db.execute(sql, [username, password_hash])
-    except sqlite3.IntegrityError:
-        return "VIRHE: tunnus on jo varattu <br /><a href='/'>back</a>"
-
-    return "Tunnus luotu <br /><a href='/'>back</a>"
+    success = db.add_user(username, password_hash)
+    if not success:
+        error = "VIRHE: tunnus on jo varattu"
+        return render_template("register.html", error=error)
+    session["register_success"] = True
+    return redirect("/")
 
 
 @app.route("/login", methods=["POST"])
@@ -45,20 +48,19 @@ def login():
     username = request.form["username"]
     password = request.form["password"]
 
-    sql = "SELECT id, password_hash FROM users WHERE username = ?"
-    try:
-        result = db.query(sql, [username])[0]
-        user_id = result["id"]
-        password_hash = result["password_hash"]
-    except IndexError:
-        return "VIRHE: käyttäjää ei ole olemassa <br /><a href='/'>back</a> <br /><a href='/register'>register</a>"
-
+    user = db.get_user_by_username(username)
+    if not user:
+        error = "VIRHE: käyttäjää ei ole olemassa"
+        return render_template("index.html", error=error)
+    user_id = user["id"]
+    password_hash = user["password_hash"]
     if check_password_hash(password_hash, password):
         session["username"] = username
         session["user_id"] = user_id
         return redirect("/")
     else:
-        return "VIRHE: väärä tunnus tai salasana <br /><a href='/'>back</a>"
+        error = "VIRHE: väärä tunnus tai salasana"
+        return render_template("index.html", error=error)
 
 
 @app.route("/logout")
@@ -79,6 +81,15 @@ def create_meeting():
     date = request.form["date"]
     description = request.form["description"]
     user_id = session["user_id"]
+
+    if (
+        not title.strip()
+        or not gear.strip()
+        or not date.strip()
+        or not description.strip()
+    ):
+        error = "Täytä kaikki kentät."
+        return render_template("new_meeting.html", error=error)
 
     meetings.add_meeting(title, gear, date, description, user_id)
 

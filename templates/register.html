@@ -6,6 +6,12 @@
 </head>
 
 <body>
+  {% if error %}
+    <p style="color:red;">{{ error }}</p>
+  {% endif %}
+  {% if success %}
+    <p style="color:green;">{{ success }}</p>
+  {% endif %}
   <form action="/create" method="post">
     <p>
       Tunnus: <br />
@@ -21,6 +27,9 @@
     </p>
     <input type="submit" value="Luo tunnus" />
   </form>
+   <p>
+        <a href="/">back</a>
+    </p>
 </body>
 
 </html>

@@ -7,12 +7,18 @@
 
 <body>
     <h1>WindFriends</h1>
-    {% if session.username %}
+        {% if error %}
+            <p style="color:red;">{{ error }}</p>
+        {% endif %}
+        {% if register_success %}
+            <p style="color:green;">Registered successfully! You can now log in below:</p>
+        {% endif %}
+        {% if session.username %}
     <p>
-        Olet kirjautunut nimellä {{ session.username }}, id-numerosi on {{ session.user_id }}
+        Signed in as {{ session.username }}, your id is {{ session.user_id }}
     </p>
     <p>
-        <a href="/logout">Kirjaudu ulos</a>
+        <a href="/logout">Logout</a>
     </p>
     <h2>Meetings</h2>
     <ul>
@@ -25,20 +31,22 @@
     <p>
         <a href="/new_meeting">Suggest a meeting</a>
     </p>
+
     {% else %}
     <p>
-        Log in to view and suggest meetings
+        Log in or register to view and suggest meetings
     </p>
+
     <form action="/login" method="post">
         <p>
-        Tunnus: <br />
+        Username: <br />
         <input type="text" name="username" required/>
         </p>
         <p>
-        Salasana: <br />
+        Password: <br />
         <input type="password" name="password" required/>
         </p>
-        <input type="submit" value="Kirjaudu" />
+        <input type="submit" value="Login" />
     </form>
     <p>
         <a href='/register'>Register</a>

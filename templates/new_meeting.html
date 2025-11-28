@@ -7,6 +7,9 @@
 
 <body>
     <h1>New meeting</h1>
+        {% if error %}
+            <p style="color:red;">{{ error }}</p>
+        {% endif %}
     <form action="/create_meeting" method="POST">
     <p>
         Title: <br />
@@ -29,6 +32,8 @@
         <textarea name='description' rows="5" cols="40"></textarea>
     </p>
     <input type="submit" value="Suggest" />
+    <br>
+    <a href="/">Cancel</a>
   </form>
 </body>
 
