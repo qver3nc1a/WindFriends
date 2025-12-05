@@ -14,10 +14,13 @@ app.secret_key = config.secret_key
 
 @app.route("/")
 def index():
-    all_meetings = meetings.get_meetings()
+    latest_meetings = meetings.get_latest_meetings(3)
     register_success = session.pop("register_success", None)
     return render_template(
-        "index.html", meetings=all_meetings, register_success=register_success
+        "index.html",
+        meetings=latest_meetings,
+        register_success=register_success,
+        show_all_meetings_header=False,
     )
 
 
@@ -29,7 +32,13 @@ def register():
 @app.route("/create", methods=["POST"])
 def create():
     username = request.form["username"]
+    if not username.strip():
+        error = "Username cannot be blank"
+        return render_template("register.html", error=error)
     password1 = request.form["password1"]
+    if not password1.strip():
+        error = "Password cannot be blank"
+        return render_template("register.html", error=error)
     password2 = request.form["password2"]
     if password1 != password2:
         error = "Passwords don't match"
@@ -103,7 +112,7 @@ def show_meeting(meeting_id):
     return render_template("show_meeting.html", meeting=meeting)
 
 
-@app.route("/edit_meeting/<int:meeting_id>")
+@app.route("/edit_meeting/<int:meeting_id>", methods=["GET", "POST"])
 def edit_meeting(meeting_id):
     meeting = meetings.get_meeting(meeting_id)
     return render_template("edit_meeting.html", meeting=meeting)
@@ -125,7 +134,10 @@ def update_meeting():
 @app.route("/search")
 def search():
     query = request.args.get("query")
-    results = meetings.search(query) if query else []
+    if query:
+        results = meetings.search(query)
+    else:
+        results = meetings.get_meetings()
     return render_template("search.html", query=query, results=results)
 
 
@@ -137,3 +149,9 @@ def show_user(user_id):
         return render_template("index.html", error=error)
     meetings = users.get_meetings(user_id)
     return render_template("user.html", user=user, meetings=meetings)
+
+
+@app.route("/delete_meeting/<int:meeting_id>", methods=["POST"])
+def delete_meeting(meeting_id):
+    meetings.delete_meeting(meeting_id)
+    return redirect("/")

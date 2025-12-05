@@ -3,57 +3,74 @@
 
 <head>
   <title>WindFriends</title>
+  <link rel="stylesheet" href="../static/main.css" />
 </head>
 
 <body>
+    <div class="centered-app">
     <h1>WindFriends</h1>
         {% if error %}
-            <p style="color:red;">{{ error }}</p>
+            <p class="error">{{ error }}</p>
         {% endif %}
         {% if register_success %}
-            <p style="color:green;">Registered successfully! You can now log in below:</p>
+            <p class="success">Registered successfully! You can now log in below:</p>
         {% endif %}
         {% if session.username %}
     <p>
         Signed in as <a href="/user/{{ session.user_id }}">{{ session.username }}</a>
     </p>
-    <p>
-        <a href="/logout">Logout</a>
-    </p>
-    <h2>Meetings</h2>
-    <ul>
-        {%for meeting in meetings%}
-        <li>
-            <a href="/meeting/{{meeting.id}}">{{meeting.title}}</a>
-        </li>
-        {%endfor%}
-    </ul>
-    {% include "search_form.html" %}
+    <form action="/logout" method="get">
+        <button type="submit">Logout</button>
+    </form>
+    <div>
+        <h2>Meetings</h2>
+        <p>Most recent meetings</p>
+        {% if meetings|length == 0 %}
+            <p>No meetings yet</p>
+        {% else %}
+            <div class="meeting-list">
+                {% for meeting in meetings %}
+                <div class="meeting-card">
+                    <div>
+                        <a href="/meeting/{{ meeting.id }}">{{ meeting.title }}</a><br />
+                        <span class="meeting-date">{{ meeting.date }} by <a href="/user/{{ meeting.user_id }}">{{ meeting.username }}</a></span>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        {% endif %}
+    </div>
+    <div>
+        {% set show_keyword = false %}
+        {% include "search_form.html" %}
+    </div>
     <h2>Suggest meetings</h2>
-    <p>
-        <a href="/new_meeting">Suggest a meeting</a>
-    </p>
+    <form action="/new_meeting" method="get" >
+        <button type="submit">Suggest</button>
+    </form>
 
     {% else %}
     <p>
-        Log in or register to view and suggest meetings
+        Log in to view and suggest meetings
     </p>
 
     <form action="/login" method="post">
         <p>
         Username: <br />
-        <input type="text" name="username" required/>
+        <input type="text" name="username"/>
         </p>
         <p>
         Password: <br />
-        <input type="password" name="password" required/>
+        <input type="password" name="password"/>
         </p>
         <input type="submit" value="Login" />
     </form>
-    <p>
-        <a href='/register'>Register</a>
-    </p>
+    <p>If you don't have an account yet, register below</p>
+    <form action="/register" method="get">
+        <button type="submit">Register</button>
+    </form>
     {% endif %}
+    </div>
 
     </body>
 

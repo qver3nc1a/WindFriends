@@ -7,7 +7,12 @@ def add_meeting(title, gear, date, description, user_id):
 
 
 def get_meetings():
-    sql = "SELECT id, title FROM meetings ORDER BY id DESC"
+    sql = """
+        SELECT m.id, m.title, m.gear, m.date, m.description, u.username, u.id as user_id
+        FROM meetings m
+        JOIN users u ON m.user_id = u.id
+        ORDER BY m.date DESC
+    """
     return db.query(sql)
 
 
@@ -42,3 +47,19 @@ def search(query):
             ORDER BY m.date DESC
         """
     return db.query(sql, ["%" + query + "%", "%" + query + "%", "%" + query + "%"])
+
+
+def delete_meeting(meeting_id):
+    sql = "DELETE FROM meetings WHERE id = ?"
+    db.execute(sql, [meeting_id])
+
+
+def get_latest_meetings(limit=3):
+    sql = """
+        SELECT m.id, m.title, m.gear, m.date, m.description, u.username, u.id as user_id
+        FROM meetings m
+        JOIN users u ON m.user_id = u.id
+        ORDER BY m.date DESC
+        LIMIT ?
+    """
+    return db.query(sql, [limit])

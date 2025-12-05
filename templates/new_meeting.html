@@ -2,39 +2,44 @@
 <html>
 
 <head>
-  <title>New meeting</title>
+    <title>New meeting</title>
+    <link rel="stylesheet" href="../static/main.css" />
 </head>
 
 <body>
+    <div class="centered-app">
     <h1>New meeting</h1>
         {% if error %}
-            <p style="color:red;">{{ error }}</p>
+            <p class="error">{{ error }}</p>
         {% endif %}
     <form action="/create_meeting" method="POST">
-    <p>
-        Title: <br />
+    <div>
+        <h3>Title:</h3>
         <p>Give your suggestion a name.</p>
-        <input type="text" name="title" required/>
-    </p>
-    <p>
-        Gear: <br />
+        <input type="text" name="title"/>
+    </div>
+    <div>
+        <h3>Gear:</h3>
         <p>What gear do you use?</p>
-        <input type="text" name="gear" required/>
-    </p>
-    <p>
-        Date: <br />
+        <input type="text" name="gear"/>
+    </div>
+    <div>
+        <h3>Date:</h3>
         <p>When do you want to meet?</p>
-        <input type="datetime-local" name="date" required>
-    </p>
-    <p>
-        Description: <br />
+        <input type="datetime-local" name="date">
+    </div>
+    <div>
+        <h3>Description:</h3>
         <p>Who are you? What do you want to do?</p>
         <textarea name='description' rows="5" cols="40"></textarea>
-    </p>
-    <input type="submit" value="Suggest" />
+    </div>
     <br>
-    <a href="/">Cancel</a>
+    <input type="submit" value="Suggest" class='suggest-button'/>
+    <br>
+    <br>
+    <a href="/" class="button">Cancel</a>
   </form>
+  </div>
 </body>
 
 </html>

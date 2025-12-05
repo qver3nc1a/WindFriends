@@ -2,34 +2,36 @@
 <html>
 
 <head>
-  <title>Rekisteröinti</title>
+  <title>Register</title>
+  <link rel="stylesheet" href="../static/main.css" />
 </head>
 
 <body>
+  <div class="centered-app">
+  <h2>Register</h2>
   {% if error %}
-    <p style="color:red;">{{ error }}</p>
+    <p class="error">{{ error }}</p>
   {% endif %}
   {% if success %}
-    <p style="color:green;">{{ success }}</p>
+    <p class="success">{{ success }}</p>
   {% endif %}
   <form action="/create" method="post">
     <p>
-      Tunnus: <br />
-      <input type="text" name="username" required/>
+      Username: <br />
+      <input type="text" name="username"/>
     </p>
     <p>
-      Salasana: <br />
-      <input type="password" name="password1" required/>
+      Password: <br />
+      <input type="password" name="password1"/>
     </p>
     <p>
-      Salasana uudestaan: <br />
-      <input type="password" name="password2" required/>
+      Password again: <br />
+      <input type="password" name="password2"/>
     </p>
-    <input type="submit" value="Luo tunnus" />
+    <input type="submit" value="Create user" />
   </form>
-   <p>
-        <a href="/">back</a>
-    </p>
+  <a href="/" class="button">Back</a>
+  </div>
 </body>
 
 </html>

@@ -2,31 +2,41 @@
 <html>
 
 <head>
-  <title>{{ meeting.title }}</title>
+    <title>{{ meeting.title }}</title>
+    <link rel="stylesheet" href="../static/main.css" />
 </head>
 
 <body>
+    <div class="centered-app">
     <h1>{{ meeting.title }}</h1>
-    <p>
-        Gear: {{ meeting.gear }}
-    </p>
-    <p>
-        Date of the meeting: {{ meeting.date }}
-    </p>
-    <p>
-        Additional information: {{ meeting.description | replace('\n', '<br>') | safe }}
-    </p>
-    <p>
-        Organizer: <a href="/user/{{ meeting.user_id }}">{{ meeting.username }}</a>
-    </p>
+    <div class="meeting-field">
+        <span class="meeting_headers_h3">Gear:</span>
+        <span>{{ meeting.gear }}</span>
+    </div>
+    <div class="meeting-field">
+        <span class="meeting_headers_h3">Date of the meeting:</span>
+        <span>{{ meeting.date }}</span>
+    </div>
+    <div class="meeting-field">
+        <span class="meeting_headers_h3">Additional information:</span>
+        <span>{{ meeting.description | replace('\n', '<br>') | safe }}</span>
+    </div>
+    <div class="meeting-field">
+        <span class="meeting_headers_h3">Organizer:</span>
+        <span><a href="/user/{{ meeting.user_id }}">{{ meeting.username }}</a></span>
+    </div>
     {% if session.user_id == meeting.user_id %}
-    <p>
-        <a href="/edit_meeting/{{ meeting.id }}">edit</a>
-    </p>
+    <form action="/edit_meeting/{{ meeting.id }}" method="post">
+        <button type="submit">Edit</button>
+    </form>
+    <br>
+    <form action="/delete_meeting/{{ meeting.id }}" method="post">
+        <button type="submit">Delete</button>
+    </form>
     {%endif%}
-    <p>
-        <a href="/">back</a>
-    </p>
+    <br>
+    <a href="/" class="button">Back</a>
+    </div>
 </body>
 
 </html>

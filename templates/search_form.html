@@ -1,28 +1,32 @@
-<h2>Search meetings</h2>
-<form action="/search" method="get">
+<div>
+  <h2>Search meetings</h2>
+  <p>Search meetings by keyword and view all available meetings</p>
+  <link rel="stylesheet" href="../static/main.css" />
+  <form action="/search" method="get">
+    {% if show_keyword %}
     <p>
-        Key word:
-        {% if query %}
-        <input type="text" name="query" value="{{ query }}" />
-        {% else %}
-        <input type="text" name="query" />
-        {% endif %}
+      Key word:
+      {% if query %}
+      <input type="text" name="query" value="{{ query }}" />
+      {% else %}
+      <input type="text" name="query" />
+      {% endif %}
     </p>
+    {% endif %}
     <input type="submit" value="Search" />
-</form>
+  </form>
+</div>
 
-{% if query %}
-  <hr />
-  <h2>Search results</h2>
-  <ul>
-  {% for result in results %}
-    <li>
-      <a href="/meeting/{{ result.id }}">
-        {{ result.title }}
-      </a>
-      <br />
-      {{ result.date }} (<a href="/user/{{ result.user_id }}">{{ result.username }}</a>)
-    </li>
-  {% endfor %}
-  </ul>
+{% if show_all_meetings_header is not defined or show_all_meetings_header %}
+  <h2>{% if query %}Search results{% else %}All meetings{% endif %}</h2>
 {% endif %}
+<div class="meeting-list">
+  {% for result in results %}
+    <div class="meeting-card">
+      <div>
+        <a href="/meeting/{{ result.id }}">{{ result.title }}</a><br />
+        <span class="meeting-date">{{ result.date }} by <a href="/user/{{ result.user_id }}">{{ result.username }}</a></span>
+      </div>
+    </div>
+  {% endfor %}
+</div>
