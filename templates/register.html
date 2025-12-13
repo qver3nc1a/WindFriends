@@ -1,12 +1,5 @@
-<!DOCTYPE html>
-<html>
-
-<head>
-  <title>Register</title>
-  <link rel="stylesheet" href="../static/main.css" />
-</head>
-
-<body>
+{% extends "base.html" %}
+{% block content %}
   <div class="centered-app">
   <h2>Register</h2>
   {% if error %}
@@ -30,8 +23,7 @@
     </p>
     <input type="submit" value="Create user" />
   </form>
+  <br>
   <a href="/" class="button">Back</a>
   </div>
-</body>
-
-</html>
+{% endblock %}

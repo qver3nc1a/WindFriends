@@ -1,5 +1,5 @@
-<link rel="stylesheet" href="../static/main.css" />
-
+{% extends "base.html" %}
+{% block content %}
 <div class="centered-app">
   <h1>User {{ user.username }}</h1>
 
@@ -17,16 +17,17 @@
   {% endif %}
 
   <h2>{{ user.username }}'s suggestions</h2>
-  <ul>
+  <ul class="meeting-list">
   {% for meeting in meetings %}
-    <li>
+    <li class="meeting-card">
       <a href="/meeting/{{ meeting.id }}">
         {{ meeting.title }}
       </a>
       <br />
-      ({{ meeting.description }})
+      {{ meeting.date|finnish_datetime }}
     </li>
   {% endfor %}
   </ul>
   <a href="/" class="button">Back</a>
 </div>
+{% endblock %}

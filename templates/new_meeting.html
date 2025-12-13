@@ -1,12 +1,5 @@
-<!DOCTYPE html>
-<html>
-
-<head>
-    <title>New meeting</title>
-    <link rel="stylesheet" href="../static/main.css" />
-</head>
-
-<body>
+{% extends "base.html" %}
+{% block content %}
     <div class="centered-app">
     <h1>New meeting</h1>
         {% if error %}
@@ -40,6 +33,4 @@
     <a href="/" class="button">Cancel</a>
   </form>
   </div>
-</body>
-
-</html>
+{% endblock %}

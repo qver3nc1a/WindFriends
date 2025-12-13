@@ -1,12 +1,5 @@
-<!DOCTYPE html>
-<html>
-
-<head>
-    <title>{{ meeting.title }}</title>
-    <link rel="stylesheet" href="../static/main.css" />
-</head>
-
-<body>
+{% extends "base.html" %}
+{% block content %}
     <div class="centered-app">
     <h1>{{ meeting.title }}</h1>
     <div class="meeting-field">
@@ -14,8 +7,8 @@
         <span>{{ meeting.gear }}</span>
     </div>
     <div class="meeting-field">
-        <span class="meeting_headers_h3">Date of the meeting:</span>
-        <span>{{ meeting.date }}</span>
+    <span class="meeting_headers_h3">Date:</span>
+    <span>{{ meeting.date|finnish_datetime }}</span>
     </div>
     <div class="meeting-field">
         <span class="meeting_headers_h3">Additional information:</span>
@@ -37,6 +30,4 @@
     <br>
     <a href="/" class="button">Back</a>
     </div>
-</body>
-
-</html>
+{% endblock %}

@@ -1,12 +1,5 @@
-<!DOCTYPE html>
-<html>
-
-<head>
-    <title>Edit meeting</title>
-    <link rel="stylesheet" href="../static/main.css" />
-</head>
-
-<body>
+{% extends "base.html" %}
+{% block content %}
     <div class="centered-app">
     <h1>Edit meeting</h1>
     <form action="/update_meeting" method="POST">
@@ -37,6 +30,4 @@
     <a href="/" class="button">Cancel</a>
   </form>
   </div>
-</body>
-
-</html>
+{% endblock %}

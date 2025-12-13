@@ -21,12 +21,16 @@
   <h2>{% if query %}Search results{% else %}All meetings{% endif %}</h2>
 {% endif %}
 <div class="meeting-list">
-  {% for result in results %}
-    <div class="meeting-card">
-      <div>
-        <a href="/meeting/{{ result.id }}">{{ result.title }}</a><br />
-        <span class="meeting-date">{{ result.date }} by <a href="/user/{{ result.user_id }}">{{ result.username }}</a></span>
+  {% if results|length == 0 %}
+    <p>No results found</p>
+  {% else %}
+    {% for result in results %}
+      <div class="meeting-card">
+        <div>
+          <a href="/meeting/{{ result.id }}">{{ result.title }}</a><br />
+          <span class="meeting-date">{{ result.date|finnish_datetime }} by <a href="/user/{{ result.user_id }}">{{ result.username }}</a></span>
+        </div>
       </div>
-    </div>
-  {% endfor %}
+    {% endfor %}
+  {% endif %}
 </div>

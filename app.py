@@ -7,9 +7,16 @@ import db
 import sqlite3
 import meetings
 import users
+from datetime import datetime
 
 app = Flask(__name__)
 app.secret_key = config.secret_key
+
+
+@app.template_filter("finnish_datetime")
+def finnish_datetime(value):
+    dt = datetime.fromisoformat(value)
+    return dt.strftime("%d.%m.%Y at %H:%M")
 
 
 @app.route("/")
@@ -53,24 +60,26 @@ def create():
     return redirect("/")
 
 
-@app.route("/login", methods=["POST"])
+@app.route("/login", methods=["GET", "POST"])
 def login():
-    username = request.form["username"]
-    password = request.form["password"]
+    if request.method == "POST":
+        username = request.form.get("username")
+        password = request.form.get("password")
 
-    user = db.get_user_by_username(username)
-    if not user:
-        error = "This user doesn't exist"
-        return render_template("index.html", error=error)
-    user_id = user["id"]
-    password_hash = user["password_hash"]
-    if check_password_hash(password_hash, password):
-        session["username"] = username
-        session["user_id"] = user_id
-        return redirect("/")
-    else:
-        error = "Wrong username or password"
-        return render_template("index.html", error=error)
+        user = db.get_user_by_username(username)
+        if not user:
+            error = "This user doesn't exist"
+            return render_template("index.html", error=error)
+        user_id = user["id"]
+        password_hash = user["password_hash"]
+        if check_password_hash(password_hash, password):
+            session["username"] = username
+            session["user_id"] = user_id
+            return redirect("/")
+        else:
+            error = "Wrong username or password"
+            return render_template("index.html", error=error)
+    return render_template("index.html")
 
 
 @app.route("/logout")
@@ -81,6 +90,8 @@ def logout():
 
 @app.route("/new_meeting")
 def new_meeting():
+    if "username" not in session:
+        return redirect("/login")
     return render_template("new_meeting.html")
 
 
@@ -133,6 +144,8 @@ def update_meeting():
 
 @app.route("/search")
 def search():
+    if "username" not in session:
+        return redirect("/login")
     query = request.args.get("query")
     if query:
         results = meetings.search(query)

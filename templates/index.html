@@ -1,21 +1,14 @@
-<!DOCTYPE html>
-<html>
-
-<head>
-  <title>WindFriends</title>
-  <link rel="stylesheet" href="../static/main.css" />
-</head>
-
-<body>
+{% extends "base.html" %}
+{% block content %}
     <div class="centered-app">
     <h1>WindFriends</h1>
-        {% if error %}
-            <p class="error">{{ error }}</p>
-        {% endif %}
-        {% if register_success %}
-            <p class="success">Registered successfully! You can now log in below:</p>
-        {% endif %}
-        {% if session.username %}
+    {% if error %}
+        <p class="error">{{ error }}</p>
+    {% endif %}
+    {% if register_success %}
+        <p class="success">Registered successfully! You can now log in below:</p>
+    {% endif %}
+    {% if session.username %}
     <p>
         Signed in as <a href="/user/{{ session.user_id }}">{{ session.username }}</a>
     </p>
@@ -33,25 +26,19 @@
                 <div class="meeting-card">
                     <div>
                         <a href="/meeting/{{ meeting.id }}">{{ meeting.title }}</a><br />
-                        <span class="meeting-date">{{ meeting.date }} by <a href="/user/{{ meeting.user_id }}">{{ meeting.username }}</a></span>
+                        <span class="meeting-date">{{ meeting.date|finnish_datetime}} by <a href="/user/{{ meeting.user_id }}">{{ meeting.username }}</a></span>
                     </div>
                 </div>
                 {% endfor %}
             </div>
         {% endif %}
     </div>
-    <div>
-        {% set show_keyword = false %}
-        {% include "search_form.html" %}
-    </div>
-    <h2>Suggest meetings</h2>
-    <form action="/new_meeting" method="get" >
-        <button type="submit">Suggest</button>
-    </form>
 
     {% else %}
+    <h3>Welcome to WindFriends! View and suggest meetings, meet new people. </h3>
+    <h3>Which gear do you prefer? What's your favorite weather to surf? Let's enjoy the wind together!</h3>
     <p>
-        Log in to view and suggest meetings
+        Log in below to view and suggest meetings
     </p>
 
     <form action="/login" method="post">
@@ -71,7 +58,4 @@
     </form>
     {% endif %}
     </div>
-
-    </body>
-
-    </html>
+{% endblock %}
