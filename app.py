@@ -1,5 +1,5 @@
 from flask import Flask
-from flask import request, render_template, redirect
+from flask import request, render_template, redirect, abort
 from flask import session
 import config
 from werkzeug.security import check_password_hash, generate_password_hash
@@ -8,6 +8,7 @@ import sqlite3
 import meetings
 import users
 from datetime import datetime
+import secrets
 
 app = Flask(__name__)
 app.secret_key = config.secret_key
@@ -17,6 +18,11 @@ app.secret_key = config.secret_key
 def finnish_datetime(value):
     dt = datetime.fromisoformat(value)
     return dt.strftime("%d.%m.%Y at %H:%M")
+
+
+def check_csrf():
+    if request.form["csrf_token"] != session["csrf_token"]:
+        abort(403)
 
 
 @app.route("/")
@@ -38,6 +44,7 @@ def register():
 
 @app.route("/create", methods=["POST"])
 def create():
+    check_csrf()
     username = request.form["username"]
     if not username.strip():
         error = "Username cannot be blank"
@@ -63,6 +70,7 @@ def create():
 @app.route("/login", methods=["GET", "POST"])
 def login():
     if request.method == "POST":
+        check_csrf()
         username = request.form.get("username")
         password = request.form.get("password")
 
@@ -75,6 +83,7 @@ def login():
         if check_password_hash(password_hash, password):
             session["username"] = username
             session["user_id"] = user_id
+            session["csrf_token"] = secrets.token_hex(16)
             return redirect("/")
         else:
             error = "Wrong username or password"
@@ -97,6 +106,7 @@ def new_meeting():
 
 @app.route("/create_meeting", methods=["POST"])
 def create_meeting():
+    check_csrf()
     title = request.form["title"]
     gear = request.form["gear"]
     date = request.form["date"]
@@ -125,12 +135,15 @@ def show_meeting(meeting_id):
 
 @app.route("/edit_meeting/<int:meeting_id>", methods=["GET", "POST"])
 def edit_meeting(meeting_id):
+    if request.method == "POST":
+        check_csrf()
     meeting = meetings.get_meeting(meeting_id)
     return render_template("edit_meeting.html", meeting=meeting)
 
 
 @app.route("/update_meeting", methods=["POST"])
 def update_meeting():
+    check_csrf()
     meeting_id = request.form["meeting_id"]
     title = request.form["title"]
     gear = request.form["gear"]
@@ -166,5 +179,6 @@ def show_user(user_id):
 
 @app.route("/delete_meeting/<int:meeting_id>", methods=["POST"])
 def delete_meeting(meeting_id):
+    check_csrf()
     meetings.delete_meeting(meeting_id)
     return redirect("/")

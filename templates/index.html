@@ -50,6 +50,7 @@
         Password: <br />
         <input type="password" name="password"/>
         </p>
+        <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}" />
         <input type="submit" value="Login" />
     </form>
     <p>If you don't have an account yet, register below</p>
