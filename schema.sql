@@ -1,8 +1,3 @@
-CREATE TABLE visits (
-    id INTEGER PRIMARY KEY,
-    visited_at TEXT
-);
-
 CREATE TABLE users (
     id INTEGER PRIMARY KEY,
     username TEXT UNIQUE,
@@ -15,5 +10,5 @@ CREATE TABLE meetings (
     gear TEXT,
     date DATETIME,
     description TEXT,
-    user_id INTEGER REFERENCES users
+    user_id INTEGER REFERENCES users(id) ON DELETE CASCADE
 )

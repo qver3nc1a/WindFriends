@@ -40,7 +40,7 @@ def update_meeting(meeting_id, title, gear, date, description):
 
 def search(query):
     sql = """
-            SELECT m.id, m.title, m.gear, m.date, m.description, u.username
+            SELECT m.id, m.title, m.gear, m.date, m.description, u.username, u.id as user_id
             FROM meetings m
             JOIN users u ON m.user_id = u.id
             WHERE m.title LIKE ? OR m.gear LIKE ? OR m.description LIKE ?

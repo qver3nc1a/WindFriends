@@ -122,6 +122,19 @@ def create_meeting():
         error = "Please fill all fields"
         return render_template("new_meeting.html", error=error)
 
+    if len(title) > 100:
+        error = "Title is too long (max 100 characters)"
+        return render_template("new_meeting.html", error=error)
+
+    try:
+        meeting_date = datetime.fromisoformat(date)
+        if meeting_date < datetime.now():
+            error = "Date must be in the future"
+            return render_template("new_meeting.html", error=error)
+    except ValueError:
+        error = "Invalid date format"
+        return render_template("new_meeting.html", error=error)
+
     meetings.add_meeting(title, gear, date, description, user_id)
 
     return redirect("/")
@@ -138,6 +151,8 @@ def edit_meeting(meeting_id):
     if request.method == "POST":
         check_csrf()
     meeting = meetings.get_meeting(meeting_id)
+    if meeting["user_id"] != session["user_id"]:
+        return "Forbidden", 403
     return render_template("edit_meeting.html", meeting=meeting)
 
 
@@ -145,10 +160,35 @@ def edit_meeting(meeting_id):
 def update_meeting():
     check_csrf()
     meeting_id = request.form["meeting_id"]
+    meeting = meetings.get_meeting(int(meeting_id))
+    if meeting["user_id"] != session["user_id"]:
+        return "Forbidden", 403
     title = request.form["title"]
     gear = request.form["gear"]
     date = request.form["date"]
     description = request.form["description"]
+
+    if (
+        not title.strip()
+        or not gear.strip()
+        or not date.strip()
+        or not description.strip()
+    ):
+        error = "Please fill all fields"
+        return render_template("edit_meeting.html", meeting=meeting, error=error)
+
+    if len(title) > 100:
+        error = "Title is too long (max 100 characters)"
+        return render_template("edit_meeting.html", meeting=meeting, error=error)
+
+    try:
+        meeting_date = datetime.fromisoformat(date)
+        if meeting_date < datetime.now():
+            error = "Date must be in the future"
+            return render_template("edit_meeting.html", meeting=meeting, error=error)
+    except ValueError:
+        error = "Invalid date format"
+        return render_template("edit_meeting.html", meeting=meeting, error=error)
 
     meetings.update_meeting(meeting_id, title, gear, date, description)
 
@@ -180,5 +220,8 @@ def show_user(user_id):
 @app.route("/delete_meeting/<int:meeting_id>", methods=["POST"])
 def delete_meeting(meeting_id):
     check_csrf()
+    meeting = meetings.get_meeting(meeting_id)
+    if meeting["user_id"] != session["user_id"]:
+        return "Forbidden", 403
     meetings.delete_meeting(meeting_id)
     return redirect("/")
