@@ -1,11 +1,10 @@
 <div>
   <h2>Search meetings</h2>
   <p>Search meetings by keyword and view all available meetings</p>
-  <link rel="stylesheet" href="../static/main.css" />
   <form action="/search" method="get">
     {% if show_keyword %}
     <p>
-      Key word:
+      Keyword:
       {% if query %}
       <input type="text" name="query" value="{{ query }}" placeholder="e.g. meeting" />
       {% else %}
@@ -28,11 +27,11 @@
 </div>
 
 {% if show_all_meetings_header is not defined or show_all_meetings_header %}
-  <h2>{% if query %}Search results{% else %}All meetings{% endif %}</h2>
+  <h2>{% if query %}Search results{% else %} {% endif %}</h2>
 {% endif %}
 <div class="meeting-list">
   {% if results|length == 0 %}
-    <p>No results found</p>
+    <p>No results found or no keyword entered</p>
   {% else %}
     {% for result in results %}
       <div class="meeting-card">

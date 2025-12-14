@@ -270,7 +270,7 @@ def search():
     elif query:
         results = meetings.search(query)
     else:
-        results = meetings.get_meetings()
+        results = []
     return render_template("search.html", query=query, tags=tags, results=results)
 
 
