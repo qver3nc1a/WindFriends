@@ -27,6 +27,8 @@ def check_csrf():
 
 @app.route("/")
 def index():
+    if "csrf_token" not in session:
+        session["csrf_token"] = secrets.token_hex(16)
     latest_meetings = meetings.get_latest_meetings(3)
     register_success = session.pop("register_success", None)
     return render_template(
@@ -39,6 +41,8 @@ def index():
 
 @app.route("/register")
 def register():
+    if "csrf_token" not in session:
+        session["csrf_token"] = secrets.token_hex(16)
     return render_template("register.html")
 
 
@@ -91,9 +95,13 @@ def login():
     return render_template("index.html")
 
 
-@app.route("/logout")
+@app.route("/logout", methods=["POST"])
 def logout():
-    del session["username"]
+    check_csrf()
+    session.pop("username", None)
+    session.pop("user_id", None)
+    session.pop("csrf_token", None)
+    session["csrf_token"] = secrets.token_hex(16)
     return redirect("/")
 
 
@@ -156,6 +164,7 @@ def show_meeting(meeting_id):
 
 @app.route("/meeting/<int:meeting_id>/message", methods=["POST"])
 def post_message(meeting_id):
+    check_csrf()
     if "user_id" not in session:
         error = "You must be logged in to post a message."
         meeting = meetings.get_meeting(meeting_id)

@@ -12,7 +12,8 @@
     <p>
         Signed in as <a href="/user/{{ session.user_id }}">{{ session.username }}</a>
     </p>
-    <form action="/logout" method="get">
+    <form action="/logout" method="post">
+        <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}" />
         <button type="submit">Logout</button>
     </form>
     <div>
