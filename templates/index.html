@@ -18,7 +18,11 @@
     </form>
     <div>
         <h2>Meetings</h2>
-        <p>Most recent meetings</p>
+        {% if show_all_meetings_header %}
+            <p>You can view and suggest meetings now! Welcome!</p>
+        {% else %}
+            <p>Most recent meetings</p>
+        {% endif %}
         {% if meetings|length == 0 %}
             <p>No meetings yet</p>
         {% else %}
@@ -32,6 +36,27 @@
                 </div>
                 {% endfor %}
             </div>
+            {% if page and page_count %}
+            <div class="pager">
+                {% if page > 1 %}
+                    <a class="pager-link" href="/1" title="First page">««</a>
+                    <a class="pager-link" href="/{{ page - 1 }}" title="Previous page">«</a>
+                {% else %}
+                    <span class="pager-disabled">««</span>
+                    <span class="pager-disabled">«</span>
+                {% endif %}
+
+                <span class="pager-status">Page {{ page }} / {{ page_count }}</span>
+
+                {% if page < page_count %}
+                    <a class="pager-link" href="/{{ page + 1 }}" title="Next page">»</a>
+                    <a class="pager-link" href="/{{ page_count }}" title="Last page">»»</a>
+                {% else %}
+                    <span class="pager-disabled">»</span>
+                    <span class="pager-disabled">»»</span>
+                {% endif %}
+            </div>
+            {% endif %}
         {% endif %}
     </div>
 

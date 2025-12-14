@@ -1,6 +1,24 @@
 import db
 
 
+def get_meetings_count():
+    rows = db.query("SELECT COUNT(*) AS c FROM meetings")
+    return rows[0]["c"] if rows else 0
+
+
+def get_meetings_page(limit, offset):
+    return db.query(
+        """
+        SELECT m.id, m.title, m.date, m.gear, m.wind_speed, m.tags, m.user_id, u.username
+        FROM meetings m
+        JOIN users u ON u.id = m.user_id
+        ORDER BY m.date DESC
+        LIMIT ? OFFSET ?
+        """,
+        [limit, offset],
+    )
+
+
 def add_meeting(title, gear, date, description, user_id, wind_speed, tags_str=""):
     """Create a meeting and return its id. Stores tags as a comma-separated string."""
     sql = "INSERT INTO meetings (title, gear, date, description, user_id, wind_speed, tags) VALUES (?, ?, ?, ?, ?, ?, ?)"

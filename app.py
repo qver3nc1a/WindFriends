@@ -26,16 +26,34 @@ def check_csrf():
 
 
 @app.route("/")
-def index():
+@app.route("/<int:page>")
+def index(page=1):
     if "csrf_token" not in session:
         session["csrf_token"] = secrets.token_hex(16)
-    latest_meetings = meetings.get_latest_meetings(3)
+
+    page_size = 10
+
+    total = meetings.get_meetings_count()
+    page_count = max((total + page_size - 1) // page_size, 1)
+
+    if page < 1:
+        return redirect("/1")
+    if page > page_count:
+        return redirect("/" + str(page_count))
+
+    offset = (page - 1) * page_size
+    paged_meetings = meetings.get_meetings_page(page_size, offset)
+
     register_success = session.pop("register_success", None)
     return render_template(
         "index.html",
-        meetings=latest_meetings,
+        meetings=paged_meetings,
         register_success=register_success,
-        show_all_meetings_header=False,
+        show_all_meetings_header=True,
+        page=page,
+        page_count=page_count,
+        per_page=page_size,
+        total=total,
     )
 
 
