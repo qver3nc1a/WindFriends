@@ -62,7 +62,8 @@
             {% if session.user_id %}
             <form action="/meeting/{{ meeting.id }}/message" method="post">
                 <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}" />
-                <textarea name="content" rows="2" cols="40" placeholder="Type your question here..."></textarea><br>
+                <label for="message_content">Your question</label><br>
+                <textarea id="message_content" name="content" rows="2" cols="40" placeholder="Type your question here..."></textarea><br>
                 <button class="message-button" type="submit">Send</button>
             </form>
             {% else %}

@@ -10,27 +10,32 @@
     <div>
         <h3>Title:</h3>
         <p>Give your suggestion a name.</p>
-        <input type="text" name="title"/>
+        <label for="title">Title</label><br />
+        <input id="title" type="text" name="title"/>
     </div>
     <div>
         <h3>Gear:</h3>
         <p>What gear do you use?</p>
-        <input type="text" name="gear"/>
+        <label for="gear">Gear</label><br />
+        <input id="gear" type="text" name="gear"/>
     </div>
     <div>
         <h3>Date:</h3>
         <p>When do you want to meet?</p>
-        <input type="datetime-local" name="date">
+        <label for="date">Date</label><br />
+        <input id="date" type="datetime-local" name="date">
     </div>
     <div>
         <h3>Wind speed:</h3>
         <p>How windy is it? (1 = calm, 5 = stormy)</p>
-            <input type="range" name="wind_speed" min="1" max="5" value="3">
+            <label for="wind_speed">Wind speed</label><br />
+            <input id="wind_speed" type="range" name="wind_speed" min="1" max="5" value="3">
     </div>
     <div>
         <h3>Description:</h3>
         <p>Who are you? What do you want to do?</p>
-        <textarea name='description' rows="5" cols="40"></textarea>
+        <label for="description">Description</label><br />
+        <textarea id='description' name='description' rows="5" cols="40"></textarea>
     </div>
     <div>
         <h3>Vibe tags:</h3>
@@ -38,7 +43,8 @@
             Add tags! Do you want the meeting to be energetic or calm? Fun? Exciting? Whatever you can think of!<br>
             Enter tags separated by commas (e.g. energetic, fun, chill)
         </p>
-        <input type="text" name="tags" placeholder="e.g. energetic, fun, chill (optional)"/>
+        <label for="tags">Vibe tags</label><br />
+        <input id="tags" type="text" name="tags" placeholder="e.g. energetic, fun, chill (optional)"/>
     </div>
     <br>
     <input type="submit" value="Suggest" class='suggest-button'/>

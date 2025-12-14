@@ -10,16 +10,16 @@
   {% endif %}
   <form action="/create" method="post">
     <p>
-      Username: <br />
-      <input type="text" name="username"/>
+      <label for="reg_username">Username</label><br />
+      <input id="reg_username" type="text" name="username"/>
     </p>
     <p>
-      Password: <br />
-      <input type="password" name="password1"/>
+      <label for="reg_password1">Password</label><br />
+      <input id="reg_password1" type="password" name="password1"/>
     </p>
     <p>
-      Password again: <br />
-      <input type="password" name="password2"/>
+      <label for="reg_password2">Password again</label><br />
+      <input id="reg_password2" type="password" name="password2"/>
     </p>
     <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}" />
     <input type="submit" value="Create user" />

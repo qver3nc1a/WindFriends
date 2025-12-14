@@ -5,34 +5,34 @@
     <form action="/update_meeting" method="POST">
     <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}" />
     <p>
-        Title: <br />
         <p>Give your suggestion a name.</p>
-        <input type="text" name="title" value='{{meeting.title}}'/>
+        <label for="title">Title</label><br />
+        <input id="title" type="text" name="title" value='{{meeting.title}}'/>
     </p>
     <p>
-        Gear: <br />
         <p>What gear do you use?</p>
-        <input type="text" name="gear" value='{{meeting.gear}}'/>
+        <label for="gear">Gear</label><br />
+        <input id="gear" type="text" name="gear" value='{{meeting.gear}}'/>
     </p>
     <p>
-        Date: <br />
         <p>When do you want to meet?</p>
-        <input type="datetime-local" name="date" value='{{meeting.date}}'>
+        <label for="date">Date</label><br />
+        <input id="date" type="datetime-local" name="date" value='{{meeting.date}}'>
     </p>
     <p>
-        Wind speed: <br />
         <p>How windy is it? (1 = calm, 5 = stormy)</p>
-        <input type="range" name="wind_speed" min="1" max="5" value="{{ meeting.wind_speed }}">
+        <label for="wind_speed">Wind speed</label><br />
+        <input id="wind_speed" type="range" name="wind_speed" min="1" max="5" value="{{ meeting.wind_speed }}">
     </p>
     <p>
-        Description: <br />
         <p>Who are you? What do you want to do?</p>
-        <textarea name='description' rows="5" cols="40">{{meeting.description}}</textarea>
+        <label for="description">Description</label><br />
+        <textarea id='description' name='description' rows="5" cols="40">{{meeting.description}}</textarea>
     </p>
     <p>
-        Vibe tags: <br />
         <p>Add tags separated by commas (e.g. energetic, fun, chill)</p>
-        <input type="text" name="tags" value="{{ meeting.tags }}" placeholder="e.g. energetic, fun, chill (optional)" />
+        <label for="tags">Vibe tags</label><br />
+        <input id="tags" type="text" name="tags" value="{{ meeting.tags }}" placeholder="e.g. energetic, fun, chill (optional)" />
     </p>
     <input type="hidden" name="meeting_id" value="{{ meeting.id }}">
     <input type="submit" value="Update meeting" />

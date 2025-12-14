@@ -44,12 +44,12 @@
 
     <form action="/login" method="post">
         <p>
-        Username: <br />
-        <input type="text" name="username"/>
+        <label for="login_username">Username</label><br />
+        <input id="login_username" type="text" name="username"/>
         </p>
         <p>
-        Password: <br />
-        <input type="password" name="password"/>
+        <label for="login_password">Password</label><br />
+        <input id="login_password" type="password" name="password"/>
         </p>
         <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}" />
         <input type="submit" value="Login" />
