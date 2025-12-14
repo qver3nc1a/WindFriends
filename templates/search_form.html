@@ -7,12 +7,22 @@
     <p>
       Key word:
       {% if query %}
-      <input type="text" name="query" value="{{ query }}" />
+      <input type="text" name="query" value="{{ query }}" placeholder="e.g. meeting" />
       {% else %}
-      <input type="text" name="query" />
+      <input type="text" name="query"  placeholder="e.g. meeting"/>
       {% endif %}
     </p>
     {% endif %}
+    <p>Filter by tags (comma-separated). Matches any of the tags.</p>
+    <p>
+      Tags:
+      {% if tags %}
+        <input type="text" name="tags" value="{{ tags }}" placeholder="e.g. fun, chill" />
+      {% else %}
+        <input type="text" name="tags" placeholder="e.g. energetic, fun, chill"/>
+      {% endif %}
+      <br>
+    </p>
     <input type="submit" value="Search" />
   </form>
 </div>
@@ -29,6 +39,16 @@
         <div>
           <a href="/meeting/{{ result.id }}">{{ result.title }}</a><br />
           <span class="meeting-date">{{ result.date|finnish_datetime }} by <a href="/user/{{ result.user_id }}">{{ result.username }}</a></span>
+          {% if result.tags %}
+            <div class="tags">
+              <span class="tags-label">Tags:</span>
+              {% for t in result.tags.split(',') %}
+                {% if t.strip() %}
+                <span class="tag">{{ t.strip() }}</span>
+                {% endif %}
+              {% endfor %}
+            </div>
+          {% endif %}
         </div>
       </div>
     {% endfor %}

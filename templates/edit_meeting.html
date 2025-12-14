@@ -29,6 +29,11 @@
         <p>Who are you? What do you want to do?</p>
         <textarea name='description' rows="5" cols="40">{{meeting.description}}</textarea>
     </p>
+    <p>
+        Vibe tags: <br />
+        <p>Add tags separated by commas (e.g. energetic, fun, chill)</p>
+        <input type="text" name="tags" value="{{ meeting.tags }}" placeholder="e.g. energetic, fun, chill (optional)" />
+    </p>
     <input type="hidden" name="meeting_id" value="{{ meeting.id }}">
     <input type="submit" value="Update meeting" />
     <br>

@@ -111,6 +111,7 @@ def create_meeting():
     gear = request.form["gear"]
     date = request.form["date"]
     description = request.form["description"]
+    tags_raw = request.form.get("tags", "")
 
     wind_speed = int(request.form.get("wind_speed", 1))
     user_id = session["user_id"]
@@ -137,7 +138,11 @@ def create_meeting():
         error = "Invalid date format"
         return render_template("new_meeting.html", error=error)
 
-    meetings.add_meeting(title, gear, date, description, user_id, wind_speed)
+    tag_names = [t.strip().lower() for t in tags_raw.split(",") if t.strip()]
+    tags_str = ", ".join(tag_names)
+    meeting_id = meetings.add_meeting(
+        title, gear, date, description, user_id, wind_speed, tags_str
+    )
 
     return redirect("/")
 
@@ -193,6 +198,7 @@ def update_meeting():
 
     description = request.form["description"]
     wind_speed = int(request.form.get("wind_speed", 1))
+    tags_raw = request.form.get("tags", "")
 
     if (
         not title.strip()
@@ -216,7 +222,11 @@ def update_meeting():
         error = "Invalid date format"
         return render_template("edit_meeting.html", meeting=meeting, error=error)
 
-    meetings.update_meeting(meeting_id, title, gear, date, description, wind_speed)
+    tag_names = [t.strip().lower() for t in tags_raw.split(",") if t.strip()]
+    tags_str = ", ".join(tag_names)
+    meetings.update_meeting(
+        meeting_id, title, gear, date, description, wind_speed, tags_str
+    )
 
     return redirect("/meeting/" + str(meeting_id))
 
@@ -226,11 +236,15 @@ def search():
     if "username" not in session:
         return redirect("/login")
     query = request.args.get("query")
-    if query:
+    tags = request.args.get("tags", "")
+    tag_names = [t.strip().lower() for t in tags.split(",") if t.strip()]
+    if tag_names:
+        results = meetings.search_by_tags(tag_names)
+    elif query:
         results = meetings.search(query)
     else:
         results = meetings.get_meetings()
-    return render_template("search.html", query=query, results=results)
+    return render_template("search.html", query=query, tags=tags, results=results)
 
 
 @app.route("/user/<int:user_id>")
