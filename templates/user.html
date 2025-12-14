@@ -1,33 +1,33 @@
 {% extends "base.html" %}
 {% block content %}
 <div class="centered-app">
-  <h1>User {{ user.username }}</h1>
+<h1>User {{ user.username }}</h1>
 
-  <p>
+<p>
     {{ user.username }} has suggested {{ meetings|length }} meetings
-  </p>
+</p>
 
-  {% if meetings %}
+{% if meetings %}
     <p>
-      First meeting suggested: {{ meetings[-1].title }}
+    First meeting suggested: {{ meetings[-1].title }}
     </p>
     <p>
-      Last meeting suggested: {{ meetings[0].title }}
+    Last meeting suggested: {{ meetings[0].title }}
     </p>
-  {% endif %}
+{% endif %}
 
-  <h2>{{ user.username }}'s suggestions</h2>
-  <ul class="meeting-list">
-  {% for meeting in meetings %}
+<h2>{{ user.username }}'s suggestions</h2>
+<ul class="meeting-list">
+{% for meeting in meetings %}
     <li class="meeting-card">
-      <a href="/meeting/{{ meeting.id }}">
+    <a href="/meeting/{{ meeting.id }}">
         {{ meeting.title }}
-      </a>
-      <br />
-      {{ meeting.date|finnish_datetime }}
+    </a>
+    <br />
+    {{ meeting.date|finnish_datetime }}
     </li>
-  {% endfor %}
-  </ul>
-  <a href="/" class="button">Back</a>
+{% endfor %}
+</ul>
+<a href="/" class="button">Back</a>
 </div>
 {% endblock %}

@@ -1,55 +1,55 @@
 <div>
-  <h2>Search meetings</h2>
-  <p>Search meetings by keyword and view all available meetings</p>
-  <form action="/search" method="get">
+<h2>Search meetings</h2>
+<p>Search meetings by keyword and view all available meetings</p>
+<form action="/search" method="get">
     {% if show_keyword %}
     <p>
-      Keyword:
-      {% if query %}
-      <input type="text" name="query" value="{{ query }}" placeholder="e.g. meeting" />
-      {% else %}
-      <input type="text" name="query"  placeholder="e.g. meeting"/>
-      {% endif %}
+    Keyword:
+    {% if query %}
+    <input type="text" name="query" value="{{ query }}" placeholder="e.g. meeting" />
+    {% else %}
+    <input type="text" name="query"  placeholder="e.g. meeting"/>
+    {% endif %}
     </p>
     {% endif %}
     <p>Filter by tags (comma-separated). Matches any of the tags.</p>
     <p>
-      Tags:
-      {% if tags %}
+    Tags:
+    {% if tags %}
         <input type="text" name="tags" value="{{ tags }}" placeholder="e.g. fun, chill" />
-      {% else %}
+    {% else %}
         <input type="text" name="tags" placeholder="e.g. energetic, fun, chill"/>
-      {% endif %}
-      <br>
+    {% endif %}
+    <br>
     </p>
     <input type="submit" value="Search" />
-  </form>
+</form>
 </div>
 
 {% if show_all_meetings_header is not defined or show_all_meetings_header %}
-  <h2>{% if query %}Search results{% else %} {% endif %}</h2>
+<h2>{% if query %}Search results{% else %} {% endif %}</h2>
 {% endif %}
 <div class="meeting-list">
-  {% if results|length == 0 %}
+{% if results|length == 0 %}
     <p>No results found or no keyword entered</p>
-  {% else %}
+{% else %}
     {% for result in results %}
-      <div class="meeting-card">
+    <div class="meeting-card">
         <div>
-          <a href="/meeting/{{ result.id }}">{{ result.title }}</a><br />
-          <span class="meeting-date">{{ result.date|finnish_datetime }} by <a href="/user/{{ result.user_id }}">{{ result.username }}</a></span>
-          {% if result.tags %}
+        <a href="/meeting/{{ result.id }}">{{ result.title }}</a><br />
+        <span class="meeting-date">{{ result.date|finnish_datetime }} by <a href="/user/{{ result.user_id }}">{{ result.username }}</a></span>
+        {% if result.tags %}
             <div class="tags">
-              <span class="tags-label">Tags:</span>
-              {% for t in result.tags.split(',') %}
+            <span class="tags-label">Tags:</span>
+            {% for t in result.tags.split(',') %}
                 {% if t.strip() %}
                 <span class="tag">{{ t.strip() }}</span>
                 {% endif %}
-              {% endfor %}
+            {% endfor %}
             </div>
-          {% endif %}
+        {% endif %}
         </div>
-      </div>
+    </div>
     {% endfor %}
-  {% endif %}
+{% endif %}
 </div>
