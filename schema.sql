@@ -10,5 +10,6 @@ CREATE TABLE meetings (
     gear TEXT,
     date DATETIME,
     description TEXT,
-    user_id INTEGER REFERENCES users(id) ON DELETE CASCADE
+    user_id INTEGER REFERENCES users(id) ON DELETE CASCADE,
+    wind_speed INTEGER
 )

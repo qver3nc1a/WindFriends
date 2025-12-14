@@ -20,6 +20,11 @@
         <input type="datetime-local" name="date" value='{{meeting.date}}'>
     </p>
     <p>
+        Wind speed: <br />
+        <p>How windy is it? (1 = calm, 5 = stormy)</p>
+        <input type="range" name="wind_speed" min="1" max="5" value="{{ meeting.wind_speed }}">
+    </p>
+    <p>
         Description: <br />
         <p>Who are you? What do you want to do?</p>
         <textarea name='description' rows="5" cols="40">{{meeting.description}}</textarea>

@@ -111,6 +111,8 @@ def create_meeting():
     gear = request.form["gear"]
     date = request.form["date"]
     description = request.form["description"]
+
+    wind_speed = int(request.form.get("wind_speed", 1))
     user_id = session["user_id"]
 
     if (
@@ -135,7 +137,7 @@ def create_meeting():
         error = "Invalid date format"
         return render_template("new_meeting.html", error=error)
 
-    meetings.add_meeting(title, gear, date, description, user_id)
+    meetings.add_meeting(title, gear, date, description, user_id, wind_speed)
 
     return redirect("/")
 
@@ -166,7 +168,9 @@ def update_meeting():
     title = request.form["title"]
     gear = request.form["gear"]
     date = request.form["date"]
+
     description = request.form["description"]
+    wind_speed = int(request.form.get("wind_speed", 1))
 
     if (
         not title.strip()
@@ -190,7 +194,7 @@ def update_meeting():
         error = "Invalid date format"
         return render_template("edit_meeting.html", meeting=meeting, error=error)
 
-    meetings.update_meeting(meeting_id, title, gear, date, description)
+    meetings.update_meeting(meeting_id, title, gear, date, description, wind_speed)
 
     return redirect("/meeting/" + str(meeting_id))
 

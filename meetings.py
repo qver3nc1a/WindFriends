@@ -1,9 +1,9 @@
 import db
 
 
-def add_meeting(title, gear, date, description, user_id):
-    sql = "INSERT INTO meetings (title, gear, date, description, user_id) VALUES (?, ?, ?, ?, ?)"
-    db.execute(sql, [title, gear, date, description, user_id])
+def add_meeting(title, gear, date, description, user_id, wind_speed):
+    sql = "INSERT INTO meetings (title, gear, date, description, user_id, wind_speed) VALUES (?, ?, ?, ?, ?, ?)"
+    db.execute(sql, [title, gear, date, description, user_id, wind_speed])
 
 
 def get_meetings():
@@ -22,6 +22,7 @@ def get_meeting(meeting_id):
                     meetings.gear,
                     meetings.date,
                     meetings.description,
+                    meetings.wind_speed,
                     users.id user_id,
                     users.username
     FROM meetings, users
@@ -29,13 +30,14 @@ def get_meeting(meeting_id):
     return db.query(sql, [meeting_id])[0]
 
 
-def update_meeting(meeting_id, title, gear, date, description):
+def update_meeting(meeting_id, title, gear, date, description, wind_speed):
     sql = """UPDATE meetings SET title = ?,
                                 gear = ?,
                                 date = ?,
-                                description = ?
+                                description = ?,
+                                wind_speed = ?
             WHERE id = ?"""
-    db.execute(sql, [title, gear, date, description, meeting_id])
+    db.execute(sql, [title, gear, date, description, wind_speed, meeting_id])
 
 
 def search(query):
