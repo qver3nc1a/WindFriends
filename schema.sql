@@ -22,3 +22,7 @@ CREATE TABLE messages (
     content TEXT NOT NULL,
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP
 );
+
+CREATE INDEX IF NOT EXISTS idx_meetings_date ON meetings(date);
+CREATE INDEX IF NOT EXISTS idx_meetings_user ON meetings(user_id);
+CREATE INDEX IF NOT EXISTS idx_messages_meeting ON messages(meeting_id);
