@@ -11,7 +11,8 @@ CREATE TABLE meetings (
     date DATETIME,
     description TEXT,
     user_id INTEGER REFERENCES users(id) ON DELETE CASCADE,
-    wind_speed INTEGER
+    wind_speed INTEGER,
+    tags TEXT
 );
 
 CREATE TABLE messages (
@@ -20,15 +21,4 @@ CREATE TABLE messages (
     user_id INTEGER REFERENCES users(id) ON DELETE CASCADE,
     content TEXT NOT NULL,
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP
-);
-
-CREATE TABLE tags (
-    id INTEGER PRIMARY KEY,
-    name TEXT UNIQUE NOT NULL
-);
-
-CREATE TABLE meeting_tags (
-    meeting_id INTEGER REFERENCES meetings(id) ON DELETE CASCADE,
-    tag_id INTEGER REFERENCES tags(id) ON DELETE CASCADE,
-    PRIMARY KEY (meeting_id, tag_id)
 );
