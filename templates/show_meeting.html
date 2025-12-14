@@ -19,13 +19,15 @@
         <span><a href="/user/{{ meeting.user_id }}">{{ meeting.username }}</a></span>
     </div>
     {% if session.user_id == meeting.user_id %}
-    <form action="/edit_meeting/{{ meeting.id }}" method="post">
-        <button type="submit">Edit</button>
-    </form>
-    <br>
-    <form action="/delete_meeting/{{ meeting.id }}" method="post">
-        <button type="submit">Delete</button>
-    </form>
+        <form action="/edit_meeting/{{ meeting.id }}" method="post">
+            <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}" />
+            <button type="submit">Edit</button>
+        </form>
+        <br>
+        <form action="/delete_meeting/{{ meeting.id }}" method="post">
+            <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}" />
+            <button type="submit">Delete</button>
+        </form>
     {%endif%}
     <br>
     <a href="/" class="button">Back</a>
