@@ -23,3 +23,15 @@ $ sqlite3 database.db < schema.sql
 ```
 $ flask run
 ```
+
+## How to test
+- Register a new user, then log in
+- Create a meeting, optionally add tags
+- View the meeting; edit or delete it (only creator can)
+- Search by keyword and by tags on the Search page
+- Ask the meeting organizer a question
+
+## Security notes
+- Passwords are hashed
+- Forms use CSRF tokens on modifying actions
+- SQL queries use parameters (no string concatenation)
