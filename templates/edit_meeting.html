@@ -3,6 +3,7 @@
     <div class="centered-app">
     <h1>Edit meeting</h1>
     <form action="/update_meeting" method="POST">
+    <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}" />
     <p>
         Title: <br />
         <p>Give your suggestion a name.</p>

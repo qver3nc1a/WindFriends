@@ -6,6 +6,7 @@
             <p class="error">{{ error }}</p>
         {% endif %}
     <form action="/create_meeting" method="POST">
+    <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}" />
     <div>
         <h3>Title:</h3>
         <p>Give your suggestion a name.</p>
