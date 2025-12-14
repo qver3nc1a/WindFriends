@@ -12,4 +12,12 @@ CREATE TABLE meetings (
     description TEXT,
     user_id INTEGER REFERENCES users(id) ON DELETE CASCADE,
     wind_speed INTEGER
-)
+);
+
+CREATE TABLE messages (
+    id INTEGER PRIMARY KEY,
+    meeting_id INTEGER REFERENCES meetings(id) ON DELETE CASCADE,
+    user_id INTEGER REFERENCES users(id) ON DELETE CASCADE,
+    content TEXT NOT NULL,
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+);

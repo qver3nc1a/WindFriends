@@ -1,5 +1,5 @@
 from flask import Flask
-from flask import request, render_template, redirect, abort
+from flask import request, render_template, redirect, abort, flash
 from flask import session
 import config
 from werkzeug.security import check_password_hash, generate_password_hash
@@ -145,7 +145,29 @@ def create_meeting():
 @app.route("/meeting/<int:meeting_id>")
 def show_meeting(meeting_id):
     meeting = meetings.get_meeting(meeting_id)
-    return render_template("show_meeting.html", meeting=meeting)
+    messages = meetings.get_messages(meeting_id)
+    return render_template("show_meeting.html", meeting=meeting, messages=messages)
+
+
+@app.route("/meeting/<int:meeting_id>/message", methods=["POST"])
+def post_message(meeting_id):
+    if "user_id" not in session:
+        error = "You must be logged in to post a message."
+        meeting = meetings.get_meeting(meeting_id)
+        messages = meetings.get_messages(meeting_id)
+        return render_template(
+            "show_meeting.html", meeting=meeting, messages=messages, error=error
+        )
+    content = request.form.get("content", "").strip()
+    if not content:
+        error = "Message cannot be empty."
+        meeting = meetings.get_meeting(meeting_id)
+        messages = meetings.get_messages(meeting_id)
+        return render_template(
+            "show_meeting.html", meeting=meeting, messages=messages, error=error
+        )
+    meetings.add_message(meeting_id, session["user_id"], content)
+    return redirect(f"/meeting/{meeting_id}")
 
 
 @app.route("/edit_meeting/<int:meeting_id>", methods=["GET", "POST"])

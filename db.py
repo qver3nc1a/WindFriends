@@ -42,3 +42,19 @@ def query(sql, params=[]):
     result = con.execute(sql, params).fetchall()
     con.close()
     return result
+
+
+def add_message(meeting_id, user_id, content):
+    sql = "INSERT INTO messages (meeting_id, user_id, content) VALUES (?, ?, ?)"
+    execute(sql, [meeting_id, user_id, content])
+
+
+def get_messages_for_meeting(meeting_id):
+    sql = """
+        SELECT messages.id, messages.content, messages.created_at, users.username, users.id as user_id
+        FROM messages
+        LEFT JOIN users ON messages.user_id = users.id
+        WHERE messages.meeting_id = ?
+        ORDER BY messages.created_at ASC
+    """
+    return query(sql, [meeting_id])

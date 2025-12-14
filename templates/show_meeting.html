@@ -29,7 +29,32 @@
             <button type="submit">Delete</button>
         </form>
     {%endif%}
-    <br>
-    <a href="/" class="button">Back</a>
+    <hr>
+    <div class="chat-section">
+        <h3>Ask the organizer a question</h3>
+            <div class="chat-messages">
+                {% if messages %}
+                    {% for msg in messages %}
+                        <div class="chat-message">
+                            <strong>{{ msg.username }}</strong> <span class="chat-date">({{ msg.created_at }})</span><br>
+                            {{ msg.content }}
+                        </div>
+                    {% endfor %}
+                {% else %}
+                    <p>No questions yet. Be the first to ask!</p>
+                {% endif %}
+            </div>
+            {% if error %}
+                <p class="error">{{ error }}</p>
+            {% endif %}
+            {% if session.user_id %}
+            <form action="/meeting/{{ meeting.id }}/message" method="post">
+                <textarea name="content" rows="2" cols="40" placeholder="Type your question here..."></textarea><br>
+                <button class="message-button" type="submit">Send</button>
+            </form>
+            {% else %}
+            <p><a href="/login">Log in</a> to ask a question.</p>
+            {% endif %}
+        </div>
     </div>
 {% endblock %}

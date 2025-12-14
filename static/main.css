@@ -127,3 +127,16 @@ h1, h2 {
 .button {
     color: rgb(195, 20, 20);
 }
+
+.chat-message {
+  margin: 10px;
+}
+
+.message-button {
+  margin-bottom: 20px;
+}
+
+.chat-date {
+  font-size: 13px;
+  color: rgb(100, 100, 100);
+}

@@ -65,3 +65,11 @@ def get_latest_meetings(limit=3):
         LIMIT ?
     """
     return db.query(sql, [limit])
+
+
+def add_message(meeting_id, user_id, content):
+    db.add_message(meeting_id, user_id, content)
+
+
+def get_messages(meeting_id):
+    return db.get_messages_for_meeting(meeting_id)
