@@ -49,7 +49,7 @@
                     {% for msg in messages %}
                         <div class="chat-message">
                             <strong>{{ msg.username }}</strong> <span class="chat-date">({{ msg.created_at }})</span><br>
-                            {{ msg.content }}
+                            {{ msg.content | replace('\n', '<br>') | safe }}
                         </div>
                     {% endfor %}
                 {% else %}
